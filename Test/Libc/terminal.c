@@ -12,7 +12,9 @@
 #define VGA_Height 25
 
 static int col = 0;
-static int row = 0;
+static int row = 1;
+
+#define MEM (uint16_t*)0xb8000
 
 void tty_putchar(uint16_t* mem , unsigned char c )
 {
@@ -101,4 +103,28 @@ void terminal_writestring(const char* data , uint16_t* memory)
 }
 
 
+
+
+
+void setCursorPos(int rowToSet , int colToSet)  // includes also row and col
+{
+    col = colToSet;
+    row = rowToSet;
+}   
+
+void deleteCol()
+{
+    *(MEM + row*VGA_Width +col -1) = vga_entry(' ' , vga_entry_color(VGA_COLOR_GREEN , VGA_COLOR_BLACK));
+    col = col -  1;
+}
+
+void deletRow(int rowToSet)
+{
+    int i =0;
+    for(i =0; i < VGA_Width ; ++i)
+    {
+        *(MEM + (rowToSet+1)*VGA_Width + i) = vga_entry(' ' , vga_entry_color(VGA_COLOR_GREEN , VGA_COLOR_BLACK));
+
+    }
+}
 

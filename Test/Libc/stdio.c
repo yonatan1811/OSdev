@@ -57,6 +57,7 @@ int My_printf(const char* restrict format , ...)
 		const char* format_begun_at = format;
 		if(*format == '%')
 		{
+			
 			format++; // getting the next variable in the list;
 			if (*format == '%') // if we want to print the char '%' we need a special case for that
 			{
@@ -65,10 +66,9 @@ int My_printf(const char* restrict format , ...)
 			}
 			else if(*format == 'c') // a case for a char
 			{
-				char ch = va_arg(args , char);
+				int ch = va_arg(args , int);
 				My_putchar(ch , MEM);
 				counter++;
-				break;
 			}
 			else if(*format == 's') // a case for string
 			{
@@ -82,9 +82,17 @@ int My_printf(const char* restrict format , ...)
 
 			else if(*format == 'd' || *format == 'i') // a case for an integer / long
 			{
-				int num = va_arg(args , int);
-				print_integer(num , MEM);
-				counter++;
+				int num = va_arg(args, int);
+    			if (num < 10) 
+				{
+        			My_putchar('0' + num, MEM); // Print leading zero
+        			counter++;
+    			} 
+				else 
+				{
+        			print_integer(num, MEM);
+        			counter++;
+    			}
 			}
 
 			else if(*format == 'X' || *format == 'x' || *format == 'p')
@@ -100,25 +108,11 @@ int My_printf(const char* restrict format , ...)
 		}
 		else // in case there is no % and just a regular print f without nothing
 		{
-			size_t len = strlen(format_begun_at);
-			if(BUFF_SIZE < len)
-				return -1;
-			for (int i = 0; i < len; i++)
-			{
-				My_putchar(format_begun_at[i] , MEM);
-				counter++;
-			}
-
-			format+=len;
-
+			My_putchar(*format,MEM);
+			counter++;
 		}
-
 		*format++; // move to the next character in the format string
-	
-
 	}
-
-
 
 	va_end(args);
 	return counter	;

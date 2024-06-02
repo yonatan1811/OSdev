@@ -61,4 +61,5 @@ int kfree(void* loc, size_t size);
 
 bitmap_t get_allocation_bitmap();
 
+int getBitSize();
 #endif

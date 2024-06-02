@@ -74,3 +74,9 @@ int kfree(void* loc, size_t size){     // also size as input, more practical to 
     }
     return 0;
 }
+
+
+int getBitSize()
+{
+    return bitmap_size;
+}

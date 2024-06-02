@@ -11,11 +11,10 @@ BIN=./HellEnter
 FLAGS=-g -ffreestanding -Wall -Wextra -fno-exceptions -m32 -std=c11
 
 
-CFILE := $(shell find ./ -name "*.c")
-COMPC := $(patsubst %.c,%.o,$(CSRC))
+SRC=$(wildcard *.c)
 
 
-LDPRIORITY := $(BIN)/Kernel/kernel_entry.o $(BIN)/Kernel/kernel.o $(BIN)/Libc/terminal.o  $(BIN)/CPU/GDT/gdt.o $(BIN)/CPU/IDT/isr.o $(BIN)/CPU/IDT/irq.o $(BIN)/CPU/IDT/idt.o $(BIN)/CPU/IDT/interrupt.o $(BIN)/CPU/GDT/gdt_loader.o
+LDPRIORITY := $(BIN)/Kernel/kernel_entry.o $(BIN)/Kernel/kernel.o $(BIN)/Libc/terminal.o  $(BIN)/CPU/GDT/gdt.o $(BIN)/CPU/IDT/isr.o $(BIN)/CPU/IDT/irq.o $(BIN)/CPU/IDT/idt.o $(BIN)/CPU/IDT/interrupt.o $(BIN)/CPU/GDT/gdt_loader.o $(BIN)/Drivers/keyboard.o
 
 LL :=  $(shell find ./ -name "*.o" | xargs)
 
@@ -38,6 +37,7 @@ my: clean
 	mkdir -p $(BIN)/FileSystem
 	mkdir -p $(BIN)/SystemCalls
 	mkdir -p $(BIN)/Drivers
+	mkdir -p $(BIN)/Shell
 	nasm -f bin $(NASMENV) Bootloader/boot.asm -o $(BIN)/boot.bin
 	##nasm Bootloader/boot.asm -f bin -o $(BIN)/boot.bin
 	nasm Kernel/empty_end.asm -f bin -o $(BIN)/empty_end.bin
@@ -70,6 +70,16 @@ my: clean
 	$(CC) $(FLAGS) -c ./CPU/isr.c -o $(BIN)/CPU/IDT/isr.o
 	$(CC) $(FLAGS) -c ./CPU/irq.c -o $(BIN)/CPU/IDT/irq.o
 	$(CC) $(FLAGS) -c ./SystemCalls/syscalls.c -o $(BIN)/SystemCalls/syscalls.o
+	$(CC) $(FLAGS) -c ./Drivers/keyboard.c -o $(BIN)/Drivers/keyboard.o
+	$(CC) $(FLAGS) -c ./Shell/Shell.c -o $(BIN)/Shell/Shell.o
+	$(CC) $(FLAGS) -c ./Shell/shellFunctions.c -o $(BIN)/Shell/shellFunctions.o
+	$(CC) $(FLAGS) -c ./Shell/functions/text.c -o $(BIN)/Shell/text.o
+	$(CC) $(FLAGS) -c ./Shell/functions/memory.c -o $(BIN)/Shell/memory.o
+	$(CC) $(FLAGS) -c ./Shell/functions/misc.c -o $(BIN)/Shell/misc.o
+
+
+
+
 
 	
 
@@ -83,6 +93,7 @@ my: clean
 	##dd if=os_image.bin of=osimage_formated.bin conv=notrunc >/dev/null
 
 	qemu-system-x86_64 -drive format=raw,file=os_image.bin,index=0,if=floppy,  -m 256M
+
 
 clean:
 	rm -r $(BIN)
