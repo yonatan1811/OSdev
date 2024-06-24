@@ -33,7 +33,8 @@ shellfunction CMDs[] = {
     CMDENTRY(&clear,    "clear",    "Clears the screen", "clear"),
     CMDENTRY(&hcf,      "hcf",      "Crashes your system", "hcf"),
     CMDENTRY(&meminfo,  "meminfo",  "Shows memory info", "meminfo"),
-    CMDENTRY(&calc,     "calc" ,    "shows the calc output of ", "calc")
+    CMDENTRY(&calc,     "calc" ,    "shows the calc output of ", "calc"),
+	CMDENTRY(&color, "color" , "Let us the abillity to change color of the shell" , "shell")
     //CMDENTRY(&diskinfo,  "diskinfo",  "Shows disk info", "diskinfo") we will put this for later.
 
 };

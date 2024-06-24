@@ -13,5 +13,6 @@ void print_integer(int value , uint16_t* memory);//this function will help us pr
 void setCursorPos(int row , int col);// includes also row and col
 void deleteCol();
 void deletRow(int row);
+void colorTerminal(uint8_t forground , uint8_t background);
 
 #endif

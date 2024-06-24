@@ -128,3 +128,13 @@ void deletRow(int rowToSet)
     }
 }
 
+void colorTerminal(uint8_t forground , uint8_t background)
+{
+	for (int i = 0; i < VGA_Height; ++i)
+    {
+        for (int j = 0; j < VGA_Width; ++j)
+        {
+            *(memory + i*VGA_Width + j) = vga_entry(' ' , vga_entry_color(forground , background));
+        }
+    }
+}

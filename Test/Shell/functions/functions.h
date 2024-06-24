@@ -15,5 +15,6 @@ FHDR(meminfo);
 
 //misc.c
 FHDR(hcf);
+FHDR(color);
 
 #endif
